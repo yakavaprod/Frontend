@@ -65,6 +65,7 @@ html {
 
 body {
   margin: 0;
+  padding: 0 3px;
   background:
     radial-gradient(circle at top left, rgba(111, 124, 255, 0.16), transparent 28%),
     radial-gradient(circle at bottom right, rgba(86, 156, 255, 0.12), transparent 28%),
@@ -134,7 +135,7 @@ button {
 .wrap {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 3px;
 }
 
 .landing-shell {
@@ -206,7 +207,7 @@ button {
 }
 
 @media (min-width: 768px) {
-  .wrap { padding: 0 2.5rem; }
+  .wrap { padding: 0 3px; }
 }
 
 .section-head {
