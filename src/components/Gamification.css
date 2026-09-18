@@ -1,0 +1,58 @@
+.gami { padding: 1.5rem 0 5.5rem; }
+
+.gami__panel {
+  background: rgba(13, 27, 45, 0.5);
+  border: 1px solid rgba(111, 124, 255, 0.16);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.gami__intro { max-width: 52ch; margin-bottom: 2.5rem; }
+
+.gami__intro p {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+}
+
+.gami__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.gami-item__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(111, 124, 255, 0.08);
+  border: 1px solid rgba(111, 124, 255, 0.2);
+  color: var(--blue-soft);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.gami-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 0.5rem;
+}
+
+.gami-item p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .gami__panel { padding: 3.5rem; }
+  .gami__grid { grid-template-columns: repeat(4, 1fr); gap: 2.5rem; }
+}
