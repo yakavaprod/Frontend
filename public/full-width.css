@@ -1,0 +1,16 @@
+/* Full-width layout override: allow the site content to use the entire viewport. */
+.wrap {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+@media (max-width: 767px) {
+  .wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
