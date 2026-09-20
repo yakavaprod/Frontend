@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FaBoxOpen, FaChartLine, FaCheckCircle, FaCompactDisc, FaEdit, FaEye, FaHeart, FaPlus, FaReceipt, FaShareAlt, FaDownload, FaTrash, FaUsers, FaLaptopCode, FaSignOutAlt, FaCog } from 'react-icons/fa'
+import { FaBoxOpen, FaChartLine, FaCheckCircle, FaCompactDisc, FaEdit, FaEye, FaHeart, FaPlus, FaReceipt, FaShareAlt, FaDownload, FaTrash, FaUsers, FaLaptopCode, FaSignOutAlt, FaCog, FaHeadset } from 'react-icons/fa'
 import { MdOutlineDashboard } from 'react-icons/md'
 import api, { clearSession } from '../api.js'
 import './Admin.css'
@@ -23,6 +23,10 @@ export default function Admin() {
   const [orders, setOrders] = useState([])
   const [users, setUsers] = useState([])
   const [reels, setReels] = useState([])
+  const [supportTickets, setSupportTickets] = useState([])
+  const [selectedTicketId, setSelectedTicketId] = useState('')
+  const [replyText, setReplyText] = useState('')
+  const [replying, setReplying] = useState(false)
 
   const [productForm, setProductForm] = useState(emptyProduct)
   const [editingProductId, setEditingProductId] = useState(null)
@@ -38,18 +42,20 @@ export default function Admin() {
     setLoading(true)
     setError('')
     try {
-      const [overviewRes, productsRes, ordersRes, usersRes, reelsRes] = await Promise.all([
+      const [overviewRes, productsRes, ordersRes, usersRes, reelsRes, ticketsRes] = await Promise.all([
         api.get('/admin/overview'),
         api.get('/admin/products'),
         api.get('/admin/orders'),
         api.get('/admin/users'),
         api.get('/admin/posts'),
+        api.get('/admin/support-tickets'),
       ])
       setOverview(overviewRes.data)
       setProducts(productsRes.data)
       setOrders(ordersRes.data)
       setUsers(usersRes.data)
       setReels(reelsRes.data)
+      setSupportTickets(ticketsRes.data)
     } catch (requestError) {
       if (requestError.response?.status === 401 || requestError.response?.status === 403) {
         navigate('/login')
@@ -62,6 +68,41 @@ export default function Admin() {
   }, [navigate])
 
   useEffect(() => { loadAll() }, [loadAll])
+
+  useEffect(() => {
+    if (!supportTickets.length) {
+      setSelectedTicketId('')
+      return
+    }
+
+    if (!selectedTicketId || !supportTickets.some((ticket) => ticket._id === selectedTicketId)) {
+      setSelectedTicketId(supportTickets[0]._id)
+    }
+  }, [supportTickets, selectedTicketId])
+
+  const selectedTicket = supportTickets.find((ticket) => ticket._id === selectedTicketId) || null
+
+  const handleReply = async (event) => {
+    event.preventDefault()
+    if (!selectedTicket || !replyText.trim()) return
+
+    setReplying(true)
+    try {
+      const { data } = await api.post(`/admin/support-tickets/${selectedTicket._id}/replies`, {
+        message: replyText,
+        status: selectedTicket.status,
+      })
+
+      setSupportTickets((current) => current.map((ticket) =>
+        ticket._id === selectedTicket._id ? data.ticket : ticket
+      ))
+      setReplyText('')
+    } catch (requestError) {
+      setError(requestError.response?.data?.error || 'Unable to send the reply.')
+    } finally {
+      setReplying(false)
+    }
+  }
 
   const handleLogout = () => {
     clearSession()
@@ -245,6 +286,7 @@ export default function Admin() {
           <button className={activeTab === 'orders' ? 'is-active' : ''} onClick={() => setActiveTab('orders')}><FaReceipt /> Orders</button>
           <button className={activeTab === 'users' ? 'is-active' : ''} onClick={() => setActiveTab('users')}><FaUsers /> Customers</button>
           <button className={activeTab === 'reels' ? 'is-active' : ''} onClick={() => setActiveTab('reels')}><FaCompactDisc /> Content (Reels)</button>
+          <button className={activeTab === 'support' ? 'is-active' : ''} onClick={() => setActiveTab('support')}><FaHeadset /> Support Tickets</button>
         </nav>
         
         <div className="admin-sidebar-footer">
@@ -262,6 +304,7 @@ export default function Admin() {
             {activeTab === 'orders' && 'Order Management'}
             {activeTab === 'users' && 'Customer Base'}
             {activeTab === 'reels' && 'Content Studio'}
+            {activeTab === 'support' && 'Support Tickets'}
           </h1>
           <div className="admin-header-actions">
             <button className="admin-profile-btn" onClick={() => navigate('/settings')}>
@@ -574,6 +617,129 @@ export default function Admin() {
         )}
 
         {/* REELS TAB */}
+        {activeTab === 'support' && (
+          <section className="admin-panel">
+            <div className="panel-heading">
+              <h2>Support Tickets</h2>
+            </div>
+
+            {supportTickets.length === 0 ? (
+              <div className="admin-support-empty">No support tickets yet.</div>
+            ) : (
+              <div className="admin-support-layout">
+                <div className="admin-table-container admin-support-table">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Category</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {supportTickets.map((ticket) => (
+                        <tr
+                          key={ticket._id}
+                          className={selectedTicketId === ticket._id ? 'is-selected' : ''}
+                          onClick={() => setSelectedTicketId(ticket._id)}
+                        >
+                          <td>
+                            <div className="td-product-info">
+                              <strong>{ticket.name}</strong>
+                              <small>{ticket.email}</small>
+                            </div>
+                          </td>
+                          <td style={{ textTransform: 'capitalize' }}>{ticket.category}</td>
+                          <td>{ticket.subject}</td>
+                          <td>
+                            <span className={`status-badge ${ticket.status}`}>{ticket.status}</span>
+                          </td>
+                          <td>{new Date(ticket.createdAt).toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {selectedTicket && (
+                  <div className="support-ticket-detail">
+                    <div className="support-ticket-detail__header">
+                      <div>
+                        <p className="eyebrow">Ticket #{selectedTicket._id.slice(-6)}</p>
+                        <h3>{selectedTicket.subject}</h3>
+                      </div>
+                      <span className={`status-badge ${selectedTicket.status}`}>{selectedTicket.status}</span>
+                    </div>
+
+                    <div className="support-ticket-detail__meta">
+                      <div><strong>Name:</strong> {selectedTicket.name}</div>
+                      <div><strong>Email:</strong> {selectedTicket.email}</div>
+                      <div><strong>Category:</strong> {selectedTicket.category}</div>
+                      <div><strong>Source:</strong> {selectedTicket.sourceUrl || 'Unknown'}</div>
+                    </div>
+
+                    <div className="support-ticket-detail__message">
+                      <h4>Problem details</h4>
+                      <p>{selectedTicket.message}</p>
+                    </div>
+
+                    <div className="support-ticket-detail__replies">
+                      <h4>Conversation</h4>
+
+                      {selectedTicket.replies && selectedTicket.replies.length > 0 ? (
+                        selectedTicket.replies.map((reply, index) => (
+                          <div key={`${reply.sender}-${index}`} className={`support-detail-reply support-detail-reply--${reply.sender}`}>
+                            <div className="support-detail-reply__meta">
+                              <strong>{reply.sender === 'admin' ? 'Admin' : 'Customer'}</strong>
+                              <span>{new Date(reply.createdAt || selectedTicket.createdAt).toLocaleString()}</span>
+                            </div>
+                            <p>{reply.message}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="support-detail-empty">No replies yet. Send the first update.</p>
+                      )}
+                    </div>
+
+                    <form onSubmit={handleReply} className="support-reply-form">
+                      <label>
+                        Admin reply
+                        <textarea
+                          value={replyText}
+                          onChange={(event) => setReplyText(event.target.value)}
+                          rows="5"
+                          placeholder="Write a reply to the customer..."
+                          required
+                        />
+                      </label>
+
+                      <div className="support-reply-form__actions">
+                        <select
+                          value={selectedTicket.status}
+                          onChange={(event) => {
+                            setSupportTickets((current) => current.map((ticket) =>
+                              ticket._id === selectedTicket._id ? { ...ticket, status: event.target.value } : ticket
+                            ))
+                          }}
+                        >
+                          <option value="open">Open</option>
+                          <option value="pending">Pending</option>
+                          <option value="resolved">Resolved</option>
+                        </select>
+                        <button type="submit" disabled={replying}>
+                          {replying ? 'Sending...' : 'Send reply'}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+
         {activeTab === 'reels' && (
           <section className="admin-panel">
             <div className="panel-heading">

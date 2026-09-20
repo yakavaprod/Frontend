@@ -3,7 +3,7 @@ import './FeaturedProducts.css'
 
 const PRODUCTS = [
   { title: 'Midnight Drill Kit Vol. 3', creator: 'Trapstation', type: 'Drum Kit', bpm: '142', key: '—', price: 'RWF 9,500' },
-  { title: 'Kigali Nights (Afrobeat Loop Pack)', creator: 'Kivu Sound', type: 'Sample Pack', bpm: '104', key: 'Cm', price: 'RWF 12,000' },
+  { title: 'Kigali Nights (Afrobeat Loop Pack)', creator: 'BM Records', type: 'Sample Pack', bpm: '104', key: 'Cm', price: 'RWF 12,000' },
   { title: 'Neon Bounce', creator: 'YB Beats', type: 'Beat / Lease', bpm: '128', key: 'F#m', price: 'RWF 7,000' },
   { title: 'React Dashboard UI Kit', creator: 'S. Musoni', type: 'Template', bpm: '—', key: '—', price: 'RWF 14,000' },
   { title: 'Analog Warmth Preset Bank', creator: 'Reel & Tape', type: 'Presets', bpm: '—', key: '—', price: 'RWF 6,500' },

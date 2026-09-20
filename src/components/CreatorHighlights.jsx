@@ -1,7 +1,7 @@
 import './CreatorHighlights.css'
 
 const CREATORS = [
-  { name: 'Kivu Sound', role: 'Sample pack label', stat: '12,400 downloads', swatch: 'cs--1' },
+  { name: 'BM Records', role: 'Independent record label', stat: '12,400 downloads', swatch: 'cs--1' },
   { name: 'S. Musoni', role: 'Full-stack instructor', stat: '5,760 students', swatch: 'cs--2' },
   { name: 'Trapstation', role: 'Drum kit producer', stat: 'RWF 4.1M in sales', swatch: 'cs--3' },
   { name: 'Reel & Tape', role: 'Preset & plugin maker', stat: '9 products live', swatch: 'cs--4' },

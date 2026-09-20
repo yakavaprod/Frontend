@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub } from 'react-icons/fa'
@@ -8,7 +8,6 @@ import api, { saveSession } from '../api.js'
 
 const ROLES = [
   { key: 'learn', label: 'Learn' },
-  { key: 'sell', label: 'Sell' },
   { key: 'both', label: 'Both' },
 ]
 
@@ -17,6 +16,71 @@ export default function SignUp() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const existing = document.getElementById('google-gsi-script')
+    if (existing || window.google?.accounts) return
+
+    const script = document.createElement('script')
+    script.id = 'google-gsi-script'
+    script.src = 'https://accounts.google.com/gsi/client'
+    script.async = true
+    script.defer = true
+    script.onload = () => {
+      if (!window.google?.accounts) {
+        setError('Google sign-up is currently blocked for this app URL. Please continue with your email and password instead.')
+      }
+    }
+    script.onerror = () => {
+      setError('Google sign-up is unavailable for this URL. Please continue with your email and password instead. For local testing, use http://localhost:5175 and allow it in Google Cloud Console.')
+    }
+    document.head.appendChild(script)
+  }, [])
+
+  const handleGoogleSignUp = async () => {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+    if (!window.google?.accounts) {
+      setError('Google sign-up is not available in this browser right now. Please continue with your email and password instead.')
+      return
+    }
+
+    if (!googleClientId) {
+      setError('Google sign-up is not configured yet. Please continue with your email and password, or restart the app after adding the Google client ID.')
+      return
+    }
+
+    setError('')
+    setLoading(true)
+
+    try {
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: async ({ credential }) => {
+          if (!credential) {
+            setError('Google sign-up did not return a valid token. Please continue with your email and password instead.')
+            setLoading(false)
+            return
+          }
+
+          try {
+            const { data } = await api.post('/auth/google', { token: credential })
+            saveSession(data)
+            navigate(data.user.role === 'admin' ? '/admin' : '/dashboard')
+          } catch (requestError) {
+            setError(requestError.response?.data?.error || 'Google sign-up is unavailable right now. Please continue with your email and password instead.')
+          } finally {
+            setLoading(false)
+          }
+        },
+      })
+
+      window.google.accounts.id.prompt()
+    } catch {
+      setError('Google sign-up could not start from this browser or URL. Please continue with your email and password instead.')
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,7 +104,7 @@ export default function SignUp() {
     <AuthLayout
       eyebrow="Create account"
       title="Join the creator network."
-      lead="Build your profile, explore learning resources, and start buying or selling digital products designed for creators."
+      lead="Build your profile, explore learning resources, and discover digital products designed for creators."
       footer={<>Already have an account? <Link to="/login">Sign in</Link></>}
     >
       <form onSubmit={handleSubmit} noValidate>
@@ -81,7 +145,7 @@ export default function SignUp() {
 
       <div className="auth-divider">or continue with</div>
       <div className="auth-social">
-        <button type="button"><FcGoogle /> Google</button>
+        <button type="button" onClick={handleGoogleSignUp} disabled={loading}><FcGoogle /> Google</button>
         <button type="button"><FaGithub /> GitHub</button>
       </div>
     </AuthLayout>

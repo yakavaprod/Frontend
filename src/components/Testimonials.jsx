@@ -3,8 +3,8 @@ import './Testimonials.css'
 const NOTES = [
   {
     quote: 'Sold my first drum kit in the same week I finished the mixing course. The vault keeps every update synced — customers never message me for a re-download.',
-    name: 'Kivu Sound',
-    role: 'Sample pack label, Kigali',
+    name: 'Red Rocks Entertainment',
+    role: 'Creative studio, Kigali',
   },
   {
     quote: 'I came for the FL Studio course and stayed for the marketplace. YA KAVA PROD is the first place that treated my beats like a real product, not a forum upload.',

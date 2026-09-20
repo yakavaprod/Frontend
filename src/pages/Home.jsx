@@ -85,7 +85,7 @@ export default function Home() {
     <div className="home-layout">
       <Navbar />
 
-      <main aria-label="YA KAVA PROD Home" className="landing-shell">
+      <main aria-label="YA KAVA STORE Home" className="landing-shell">
         {/* Dynamic Interactive Hero */}
         <Hero />
 
@@ -137,7 +137,7 @@ export default function Home() {
 
                       <div className="home-prod-card__content">
                         <h3 className="home-prod-card__title">{p.title}</h3>
-                        <p className="home-prod-card__instructor">By {p.instructor || 'YA KAVA PROD'}</p>
+                        <p className="home-prod-card__instructor">By {p.instructor || 'YA KAVA STORE'}</p>
 
                         <div className="home-prod-card__footer">
                           <div className="home-prod-card__price-box">

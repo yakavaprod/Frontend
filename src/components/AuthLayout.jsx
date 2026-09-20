@@ -7,8 +7,8 @@ export default function AuthLayout({ eyebrow, title, lead, children, footer }) {
       <div className="auth__form-side">
         <div className="auth__form-inner">
           <Link to="/" className="nav__mark auth__mark">
-            <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA PROD logo" className="nav__logo" />
-            <span>YA KAVA PROD</span>
+            <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="nav__logo" />
+            <span>YA KAVA STORE</span>
           </Link>
 
           <span className="eyebrow">{eyebrow}</span>
@@ -40,7 +40,7 @@ export default function AuthLayout({ eyebrow, title, lead, children, footer }) {
           </div>
           <blockquote className="auth__quote">
             &ldquo;Sold my first drum kit in the same week I finished the mixing course.&rdquo;
-            <cite>— Kivu Sound, sample pack label</cite>
+            <cite>— BM Records, Red Rocks Entertainment</cite>
           </blockquote>
         </div>
       </div>

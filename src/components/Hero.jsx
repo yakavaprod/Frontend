@@ -14,13 +14,9 @@ export default function Hero() {
     <section className="hero">
       <div className="wrap hero__row">
         <div className="hero__copy">
-          <div className="hero__live-pill">
-            <span className="live-dot" />
-            <span>Digital Marketplace & Creator Academy</span>
-          </div>
-
+          
           <h1 className="hero__title">
-            Empowering <span className="hero__gradient-text">Creators</span> to Learn, Sell & Scale.
+            Empowering <span className="hero__gradient-text">Creators</span> to Learn, Create & Scale.
           </h1>
 
           <p className="hero__lead">

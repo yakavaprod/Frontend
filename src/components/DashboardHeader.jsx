@@ -56,7 +56,7 @@ export default function DashboardHeader({ customer, search = '', onSearchChange,
       <div className="dashboard-header-inner">
         {/* Logo & Brand */}
         <div className="dashboard-brand">
-          <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA PROD" className="dashboard-logo" />
+          <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE" className="dashboard-logo" />
           <span className="dashboard-brand-name">My Library</span>
         </div>
 

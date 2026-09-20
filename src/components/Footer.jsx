@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   FaEnvelope,
   FaInstagram,
@@ -53,19 +54,39 @@ const CREATOR_SUITE = [
 const FOOTER_COLUMNS = [
   {
     heading: 'Marketplace',
-    links: ['Digital Products', 'Creator Kits', 'Premium Assets', 'Marketplace Rules'],
+    links: [
+      { label: 'Digital Products', href: '/products' },
+      { label: 'Creator Kits', href: '/products' },
+      { label: 'Premium Assets', href: '/products' },
+      { label: 'Marketplace Rules', href: '/products' },
+    ],
   },
   {
     heading: 'Learn',
-    links: ['Skill Courses', 'Creative Systems', 'Workflows', 'Growth Guides'],
+    links: [
+      { label: 'Skill Courses', href: '/' },
+      { label: 'Creative Systems', href: '/' },
+      { label: 'Workflows', href: '/' },
+      { label: 'Growth Guides', href: '/' },
+    ],
   },
   {
-    heading: 'Sell',
-    links: ['List Your Product', 'Creator Dashboard', 'Pricing', 'Sales Support'],
+    heading: 'Store',
+    links: [
+      { label: 'List Your Product', href: '/' },
+      { label: 'Creator Dashboard', href: '/dashboard' },
+      { label: 'Pricing', href: '/' },
+      { label: 'Support', href: '/support' },
+    ],
   },
   {
     heading: 'Company',
-    links: ['About', 'Community', 'Contact', 'Terms & Privacy'],
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Community', href: '/community' },
+      { label: 'Support', href: '/support' },
+      { label: 'Terms & Privacy', href: '/terms-of-use' },
+    ],
   },
 ]
 
@@ -89,7 +110,7 @@ export default function Footer() {
             <span className="eyebrow" style={{ fontSize: '0.75rem' }}>Creator Suite</span>
             <h2 className="foot-suite__title">Complete tools for creators</h2>
             <p className="foot-suite__description">
-              YA KAVA PROD brings together everything you need to learn, create, sell, and earn. All in one platform built for the creator economy.
+              YA KAVA STORE brings together everything you need to learn, create, and grow. All in one platform built for the creator economy.
             </p>
           </div>
 
@@ -110,10 +131,10 @@ export default function Footer() {
         <div className="wrap foot-links__grid">
           <div className="foot-brand">
             <a href="/" className="nav__mark">
-              <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA PROD logo" className="nav__logo" />
-              <span>YA KAVA PROD</span>
+              <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="nav__logo" />
+              <span>YA KAVA STORE</span>
             </a>
-            <p>Professional tools for creators to learn, create, sell, and earn.</p>
+            <p>Professional tools for creators to learn, create, and grow.</p>
 
             <div className="foot-social">
               {SOCIAL_LINKS.map(({ label, href, icon, color }) => (
@@ -137,8 +158,14 @@ export default function Footer() {
             <div className="foot-col" key={col.heading}>
               <h4>{col.heading}</h4>
               <ul>
-                {col.links.map((l) => (
-                  <li key={l}><a href="#">{l}</a></li>
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    {link.external ? (
+                      <a href={link.href} target="_blank" rel="noreferrer noopener">{link.label}</a>
+                    ) : (
+                      <Link to={link.href}>{link.label}</Link>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -150,12 +177,12 @@ export default function Footer() {
       <div className="foot-bottom">
         <div className="wrap foot-bottom__inner">
           <div className="foot-legal">
-            <a href="#">Terms of Use</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Cookie Policy</a>
-            <a href="#">GDPR</a>
+            <Link to="/terms-of-use">Terms of Use</Link>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/cookie-policy">Cookie Policy</Link>
+            <Link to="/privacy-policy">GDPR</Link>
           </div>
-          <span>© {new Date().getFullYear()} YA KAVA PROD. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} YA KAVA STORE. All rights reserved.</span>
         </div>
       </div>
     </footer>

@@ -234,6 +234,147 @@
   gap: 0.75rem;
 }
 
+.admin-support-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.admin-support-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.admin-support-table tbody tr {
+  cursor: pointer;
+}
+
+.admin-support-table tbody tr.is-selected {
+  background: rgba(129, 140, 248, 0.08);
+}
+
+.support-ticket-detail {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 18px;
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.support-ticket-detail__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.support-ticket-detail__header h3 {
+  margin: 0.2rem 0 0;
+  font-size: 1.3rem;
+}
+
+.support-ticket-detail__meta {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.support-ticket-detail__message,
+.support-ticket-detail__replies {
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  padding-top: 1rem;
+}
+
+.support-ticket-detail__message h4,
+.support-ticket-detail__replies h4 {
+  margin: 0 0 0.75rem;
+}
+
+.support-ticket-detail__message p,
+.support-detail-reply p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--text-main);
+}
+
+.support-ticket-detail__replies {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.support-detail-reply {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 12px;
+  padding: 0.75rem 0.8rem;
+}
+
+.support-detail-reply--admin {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.support-detail-reply--customer {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.support-detail-reply__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.support-detail-empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.support-reply-form {
+  display: grid;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  padding-top: 1rem;
+}
+
+.support-reply-form label {
+  display: grid;
+  gap: 0.55rem;
+  font-weight: 500;
+}
+
+.support-reply-form textarea,
+.support-reply-form select {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 12px;
+  color: var(--text-main);
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+}
+
+.support-reply-form__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.support-reply-form button {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
 /* ---------- Dashboard Grid & Cards ---------- */
 .admin-stats {
   display: grid;

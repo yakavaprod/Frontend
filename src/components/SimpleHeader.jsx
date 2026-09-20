@@ -31,8 +31,8 @@ export default function SimpleHeader({ showBack = true, title, onLogout }) {
             </button>
           )}
           <Link to="/" className="header-logo-section">
-            <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA PROD logo" className="header-logo" />
-            <span className="header-project-name">YA KAVA PROD</span>
+            <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="header-logo" />
+            <span className="header-project-name">YA KAVA STORE</span>
           </Link>
           {title && <span className="header-page-title">{title}</span>}
         </div>
