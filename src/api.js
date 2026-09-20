@@ -1,12 +1,14 @@
 import axios from 'axios'
 
-// Vite replaces VITE_API_URL at build time. The production fallback prevents
-// deployed builds from trying to call the local development server when the
-// hosting provider environment variable was not configured.
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-8z4x.onrender.com/api'
+// Vite replaces VITE_API_URL at build time. Accept either the full API URL
+// (.../api) or the Render service origin and normalize it to the API root.
+const configuredApiUrl = import.meta.env.VITE_API_URL || 'https://backend-8z4x.onrender.com/api'
+const API_BASE_URL = configuredApiUrl.replace(/\/+$/, '').endsWith('/api')
+  ? configuredApiUrl.replace(/\/+$/, '')
+  : `${configuredApiUrl.replace(/\/+$/, '')}/api`
 
 const api = axios.create({
-  baseURL: API_BASE_URL.replace(/\/$/, ''),
+  baseURL: API_BASE_URL,
 })
 
 api.interceptors.request.use((config) => {
