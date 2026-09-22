@@ -66,10 +66,10 @@ export default function Hero() {
 
             <div className="hero__image-wrapper">
               <img
-                src="/Images/kava.jpeg"
+                src="/Images/yakava1.png"
                 alt="YA KAVA product preview"
                 className="hero__product-image"
-                onError={(e) => { e.target.src = '/Images/kava.jpeg' }}
+                onError={(e) => { e.target.src = '/Images/yakava1.png' }}
               />
               <div className="hero__image-overlay">
                 <Link to="/products" className="hero__preview-play-btn" title="Preview Marketplace">

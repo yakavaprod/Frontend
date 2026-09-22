@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
@@ -79,6 +79,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -30,7 +30,7 @@ export default function Navbar() {
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="wrap nav__row">
         <Link to="/" className="nav__mark" aria-label="YA KAVA STORE home">
-          <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="nav__logo" />
+          <img src="/Images/Logos/logo.png" alt="YA KAVA STORE logo" className="nav__logo" />
           <span className="nav__brand-name">YA KAVA STORE</span>
         </Link>
 

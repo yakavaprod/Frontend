@@ -50,7 +50,7 @@ export default function Community() {
               Whether you are launching a product, refining your craft, or looking for collaborators, this community gives you access to people and opportunities that move creative work forward.
             </p>
             <div style={{ marginTop: '1.5rem' }}>
-              <a href="https://discord.gg" target="_blank" rel="noreferrer" className="yk-btn yk-btn-primary">Join the community</a>
+              <a href="https://discord.gg/E4Ad3PdTnr" target="_blank" rel="noreferrer" className="yk-btn yk-btn-primary">Join the community</a>
             </div>
           </div>
         </section>

@@ -101,20 +101,25 @@ export default function Checkout() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleApplyPromo = (e) => {
+  const handleApplyPromo = async (e) => {
     e.preventDefault()
     setPromoError('')
     const code = promoCode.trim().toUpperCase()
     if (!code) return
 
-    if (code === 'YAKAVA10' || code === 'CREATOR10') {
+    try {
+      const { data } = await api.post('/coupons/validate', {
+        code,
+        productId: product._id,
+      })
+
       setPromoApplied(true)
-      setPromoDiscount(10)
-    } else if (code === 'WELCOME20') {
-      setPromoApplied(true)
-      setPromoDiscount(20)
-    } else {
-      setPromoError('Invalid or expired coupon code. Try YAKAVA10')
+      setPromoDiscount(data.discountPercent)
+      setPromoError('')
+    } catch (requestError) {
+      setPromoApplied(false)
+      setPromoDiscount(0)
+      setPromoError(requestError.response?.data?.error || 'Invalid or expired coupon code for this product.')
     }
   }
 
@@ -131,6 +136,7 @@ export default function Checkout() {
     try {
       const { data } = await api.post('/orders', {
         items: [{ productId: product._id, quantity: quantity || 1 }],
+        promoCode: promoApplied ? promoCode.trim().toUpperCase() : '',
         billing: formData,
       })
       setOrder(data)
@@ -458,10 +464,10 @@ export default function Checkout() {
                 <div className="summary-product-item">
                   <div className="product-thumb-wrap">
                     <img
-                      src={product.image || '/Images/kava.jpeg'}
+                      src={product.image || '/Images/yakava1.png'}
                       alt={product.title}
                       className="product-thumb"
-                      onError={(e) => { e.target.src = '/Images/kava.jpeg' }}
+                      onError={(e) => { e.target.src = '/Images/yakava1.png' }}
                     />
                     <span className="product-qty-badge">{quantity}</span>
                   </div>
@@ -568,4 +574,4 @@ export default function Checkout() {
       <Footer />
     </div>
   )
-}
+}

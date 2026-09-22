@@ -50,7 +50,7 @@ export default function MobileApp() {
                 <div className="phone-mockup__notch" />
                 <div className="phone-mockup__content phone-mockup__content--image">
                   <img
-                    src="/Images/kava.jpeg"
+                    src="/Images/yakava1.png"
                     alt="YA KAVA official product image"
                     className="phone-mockup__image"
                   />
@@ -59,7 +59,7 @@ export default function MobileApp() {
                     <div className="phone-mockup__brand-bar">
                       <div className="phone-mockup__brand">
                         <img
-                          src="/Images/Logos/Yakava.jpeg"
+                          src="/Images/Logos/logo.png"
                           alt="YA KAVA PROD logo"
                           className="phone-mockup__logo"
                         />

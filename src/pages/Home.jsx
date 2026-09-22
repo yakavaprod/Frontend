@@ -124,10 +124,10 @@ export default function Home() {
                     <article key={p._id} className="home-prod-card glass-card">
                       <div className="home-prod-card__image-wrap">
                         <img
-                          src={p.image || '/Images/kava.jpeg'}
+                          src={p.image || '/Images/yakava1.png'}
                           alt={p.title}
                           className="home-prod-card__img"
-                          onError={(e) => { e.target.src = '/Images/kava.jpeg' }}
+                          onError={(e) => { e.target.src = '/Images/yakava1.png' }}
                         />
                         <span className="home-prod-card__category">{p.category}</span>
                         {p.discount > 0 && (
@@ -267,7 +267,7 @@ export default function Home() {
                 </p>
                 <div className="discord-actions">
                   <a
-                    href="https://discord.gg"
+                    href="https://discord.gg/E4Ad3PdTnr"
                     target="_blank"
                     rel="noreferrer"
                     className="yk-btn yk-btn-primary"

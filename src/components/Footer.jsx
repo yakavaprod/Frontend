@@ -131,7 +131,7 @@ export default function Footer() {
         <div className="wrap foot-links__grid">
           <div className="foot-brand">
             <a href="/" className="nav__mark">
-              <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="nav__logo" />
+              <img src="/Images/Logos/logo.png" alt="YA KAVA STORE logo" className="nav__logo" />
               <span>YA KAVA STORE</span>
             </a>
             <p>Professional tools for creators to learn, create, and grow.</p>

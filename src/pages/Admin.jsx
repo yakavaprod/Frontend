@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FaBoxOpen, FaChartLine, FaCheckCircle, FaCompactDisc, FaEdit, FaEye, FaHeart, FaPlus, FaReceipt, FaShareAlt, FaDownload, FaTrash, FaUsers, FaLaptopCode, FaSignOutAlt, FaCog, FaHeadset } from 'react-icons/fa'
+import { FaBoxOpen, FaChartLine, FaCheckCircle, FaCompactDisc, FaEdit, FaEye, FaHeart, FaPlus, FaReceipt, FaShareAlt, FaDownload, FaTrash, FaUsers, FaLaptopCode, FaSignOutAlt, FaCog, FaHeadset, FaTag } from 'react-icons/fa'
 import { MdOutlineDashboard } from 'react-icons/md'
 import api, { clearSession } from '../api.js'
 import './Admin.css'
@@ -23,6 +23,7 @@ export default function Admin() {
   const [orders, setOrders] = useState([])
   const [users, setUsers] = useState([])
   const [reels, setReels] = useState([])
+  const [coupons, setCoupons] = useState([])
   const [supportTickets, setSupportTickets] = useState([])
   const [selectedTicketId, setSelectedTicketId] = useState('')
   const [replyText, setReplyText] = useState('')
@@ -38,16 +39,31 @@ export default function Admin() {
   const [showReelForm, setShowReelForm] = useState(false)
   const [savingReel, setSavingReel] = useState(false)
 
+  const emptyCoupon = {
+    code: '',
+    description: '',
+    productId: '',
+    discountPercent: 10,
+    maxUses: 0,
+    status: 'active',
+    validFrom: '',
+    validTo: '',
+  }
+  const [couponForm, setCouponForm] = useState(emptyCoupon)
+  const [showCouponForm, setShowCouponForm] = useState(false)
+  const [savingCoupon, setSavingCoupon] = useState(false)
+
   const loadAll = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
-      const [overviewRes, productsRes, ordersRes, usersRes, reelsRes, ticketsRes] = await Promise.all([
+      const [overviewRes, productsRes, ordersRes, usersRes, reelsRes, couponsRes, ticketsRes] = await Promise.all([
         api.get('/admin/overview'),
         api.get('/admin/products'),
         api.get('/admin/orders'),
         api.get('/admin/users'),
         api.get('/admin/posts'),
+        api.get('/admin/coupons'),
         api.get('/admin/support-tickets'),
       ])
       setOverview(overviewRes.data)
@@ -55,6 +71,7 @@ export default function Admin() {
       setOrders(ordersRes.data)
       setUsers(usersRes.data)
       setReels(reelsRes.data)
+      setCoupons(couponsRes.data)
       setSupportTickets(ticketsRes.data)
     } catch (requestError) {
       if (requestError.response?.status === 401 || requestError.response?.status === 403) {
@@ -230,6 +247,48 @@ export default function Admin() {
     setReelForm((current) => ({ ...current, [name]: value }))
   }
 
+  const handleCouponInput = (event) => {
+    const { name, value } = event.target
+    setCouponForm((current) => ({ ...current, [name]: value }))
+  }
+
+  const saveCoupon = async (event) => {
+    event.preventDefault()
+    if (!couponForm.code.trim() || !couponForm.productId) return
+
+    setSavingCoupon(true)
+    setError('')
+    try {
+      const { data } = await api.post('/admin/coupons', {
+        code: couponForm.code,
+        description: couponForm.description,
+        productId: couponForm.productId,
+        discountPercent: Number(couponForm.discountPercent),
+        maxUses: Number(couponForm.maxUses || 0),
+        status: couponForm.status,
+        validFrom: couponForm.validFrom || undefined,
+        validTo: couponForm.validTo || undefined,
+      })
+
+      setCoupons((current) => [data, ...current])
+      setCouponForm(emptyCoupon)
+      setShowCouponForm(false)
+    } catch (requestError) {
+      setError(requestError.response?.data?.error || 'Unable to save coupon.')
+    } finally {
+      setSavingCoupon(false)
+    }
+  }
+
+  const removeCoupon = async (couponId) => {
+    try {
+      await api.delete(`/admin/coupons/${couponId}`)
+      setCoupons((current) => current.filter((coupon) => coupon._id !== couponId))
+    } catch {
+      setError('Unable to delete coupon.')
+    }
+  }
+
   const saveReel = async (event) => {
     event.preventDefault()
     if (reelForm.postType !== 'text' && !reelForm.videoUrl.trim()) return
@@ -283,6 +342,7 @@ export default function Admin() {
         <nav className="admin-nav" aria-label="Admin sections">
           <button className={activeTab === 'overview' ? 'is-active' : ''} onClick={() => setActiveTab('overview')}><MdOutlineDashboard /> Overview</button>
           <button className={activeTab === 'products' ? 'is-active' : ''} onClick={() => setActiveTab('products')}><FaBoxOpen /> Products</button>
+          <button className={activeTab === 'coupons' ? 'is-active' : ''} onClick={() => setActiveTab('coupons')}><FaTag /> Coupons</button>
           <button className={activeTab === 'orders' ? 'is-active' : ''} onClick={() => setActiveTab('orders')}><FaReceipt /> Orders</button>
           <button className={activeTab === 'users' ? 'is-active' : ''} onClick={() => setActiveTab('users')}><FaUsers /> Customers</button>
           <button className={activeTab === 'reels' ? 'is-active' : ''} onClick={() => setActiveTab('reels')}><FaCompactDisc /> Content (Reels)</button>
@@ -301,6 +361,7 @@ export default function Admin() {
           <h1>
             {activeTab === 'overview' && 'Overview Dashboard'}
             {activeTab === 'products' && 'Product Management'}
+            {activeTab === 'coupons' && 'Coupon Management'}
             {activeTab === 'orders' && 'Order Management'}
             {activeTab === 'users' && 'Customer Base'}
             {activeTab === 'reels' && 'Content Studio'}
@@ -528,6 +589,98 @@ export default function Admin() {
                         <div className="row-actions">
                           <button aria-label="Edit" onClick={() => editProduct(product)}><FaEdit /></button>
                           <button aria-label="Delete" className="delete" onClick={() => removeProduct(product._id)}><FaTrash /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'coupons' && (
+          <section className="admin-panel">
+            <div className="panel-heading">
+              <h2>Coupon Codes</h2>
+              <button className="primary-admin-btn" onClick={() => { setCouponForm(emptyCoupon); setShowCouponForm(true) }}><FaPlus /> Add Coupon</button>
+            </div>
+
+            {showCouponForm && (
+              <form className="product-form" onSubmit={saveCoupon}>
+                <div className="product-form-grid">
+                  <div className="form-group">
+                    <label>Coupon Code</label>
+                    <input name="code" value={couponForm.code} onChange={handleCouponInput} placeholder="SAVE10" required />
+                  </div>
+                  <div className="form-group">
+                    <label>Product</label>
+                    <select name="productId" value={couponForm.productId} onChange={handleCouponInput} required>
+                      <option value="">Select product</option>
+                      {products.map((product) => (
+                        <option key={product._id} value={product._id}>{product.title}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Discount (%)</label>
+                    <input name="discountPercent" type="number" min="1" max="100" value={couponForm.discountPercent} onChange={handleCouponInput} required />
+                  </div>
+                  <div className="form-group">
+                    <label>Max Uses</label>
+                    <input name="maxUses" type="number" min="0" value={couponForm.maxUses} onChange={handleCouponInput} />
+                  </div>
+                  <div className="form-group">
+                    <label>Status</label>
+                    <select name="status" value={couponForm.status} onChange={handleCouponInput}>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Valid From</label>
+                    <input name="validFrom" type="date" value={couponForm.validFrom} onChange={handleCouponInput} />
+                  </div>
+                  <div className="form-group">
+                    <label>Valid To</label>
+                    <input name="validTo" type="date" value={couponForm.validTo} onChange={handleCouponInput} />
+                  </div>
+                  <div className="form-group product-form-wide">
+                    <label>Description</label>
+                    <input name="description" value={couponForm.description} onChange={handleCouponInput} placeholder="Weekend creator discount" />
+                  </div>
+                </div>
+
+                <div className="form-actions">
+                  <button type="submit" className="primary-admin-btn" disabled={savingCoupon}>{savingCoupon ? 'Saving...' : 'Create Coupon'}</button>
+                  <button type="button" className="btn-secondary" onClick={() => { setCouponForm(emptyCoupon); setShowCouponForm(false) }}>Cancel</button>
+                </div>
+              </form>
+            )}
+
+            <div className="admin-table-container">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Product</th>
+                    <th>Discount</th>
+                    <th>Uses</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {coupons.map((coupon) => (
+                    <tr key={coupon._id}>
+                      <td><strong>{coupon.code}</strong></td>
+                      <td>{coupon.product?.title || coupon.productId || 'Unknown product'}</td>
+                      <td>{coupon.discountPercent}%</td>
+                      <td>{coupon.usedCount} / {coupon.maxUses || '∞'}</td>
+                      <td><span className={`status-badge ${coupon.status}`}>{coupon.status}</span></td>
+                      <td>
+                        <div className="row-actions">
+                          <button aria-label="Delete" className="delete" onClick={() => removeCoupon(coupon._id)}><FaTrash /></button>
                         </div>
                       </td>
                     </tr>

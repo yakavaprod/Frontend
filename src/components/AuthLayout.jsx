@@ -7,7 +7,7 @@ export default function AuthLayout({ eyebrow, title, lead, children, footer }) {
       <div className="auth__form-side">
         <div className="auth__form-inner">
           <Link to="/" className="nav__mark auth__mark">
-            <img src="/Images/Logos/Yakava.jpeg" alt="YA KAVA STORE logo" className="nav__logo" />
+            <img src="/Images/Logos/logo.png" alt="YA KAVA STORE logo" className="nav__logo" />
             <span>YA KAVA STORE</span>
           </Link>
 
