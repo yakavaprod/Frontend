@@ -1,0 +1,147 @@
+.auth {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+}
+
+.auth__form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 3rem;
+  background:
+    linear-gradient(90deg, rgba(4, 12, 25, 0.78), rgba(7, 15, 27, 0.68)),
+    url('/Images/yakava1.png') center/cover no-repeat;
+}
+
+.auth__form-inner {
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth__mark {
+  margin-bottom: 2.5rem;
+}
+
+.auth__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin: 0.8rem 0 0.25rem;
+}
+
+.auth__lead {
+  color: #ffffff;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+}
+
+.auth__footer {
+  margin-top: 1.75rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.auth__footer a {
+  color: var(--brass-bright);
+  font-weight: 600;
+}
+.auth__footer a:hover { color: var(--paper); }
+
+.auth__visual {
+  display: none;
+}
+
+.auth__visual-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 3rem;
+}
+
+.rack-panel {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rack-panel__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rack-jack {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--line);
+}
+
+.rack-jack--live {
+  border-color: var(--brass);
+  box-shadow: 0 0 8px rgba(201, 143, 74, 0.35);
+}
+
+.rack-panel__meter {
+  height: 4px;
+  background: var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.rack-panel__meter-fill {
+  display: block;
+  height: 100%;
+  width: 72%;
+  background: linear-gradient(90deg, var(--brass), var(--signal));
+}
+
+.auth__quote {
+  margin: 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--brass);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--paper-dim);
+  font-style: normal;
+}
+
+.auth__quote cite {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-style: normal;
+}
+
+@media (min-width: 980px) {
+  .auth {
+    flex-direction: row;
+  }
+  .auth__form-side {
+    flex: 1;
+    min-height: 100vh;
+    background:
+      linear-gradient(90deg, rgba(4, 12, 25, 0.82), rgba(7, 15, 27, 0.68)),
+      url('/Images/yakava1.png') center/cover no-repeat;
+  }
+  .auth__visual {
+    display: block;
+    flex: 1;
+    background: radial-gradient(500px 300px at 80% 20%, rgba(201, 143, 74, 0.1), transparent 70%), var(--ink-2);
+    border-left: 1px solid var(--line);
+  }
+}

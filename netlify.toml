@@ -1,0 +1,14 @@
+[build]
+  base = "Frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  VITE_API_URL = "https://backend-8z4x.onrender.com/api"
+  VITE_GOOGLE_CLIENT_ID = "311717523761-7spcqje0i2s1vs6dc2f3utm0e4naptnl.apps.googleusercontent.com"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
